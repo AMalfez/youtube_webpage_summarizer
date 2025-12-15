@@ -1,20 +1,23 @@
-from langchain_unstructured import UnstructuredLoader
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders import YoutubeLoader
 from llm import llm
 from prompt import prompt
 from groq import APIStatusError
+import validators
+from utils.isYoutubeUrl import is_youtube_url
 
 chain = prompt | llm
 
 def summarize(url: str) -> str:
     try:
-        if "youtube.com" or "youtu.be" in url:
-            loader = YoutubeLoader.from_youtube_url(
-                url, 
-                # add_video_info=True
-            )
+        validation = validators.url(url)
+        if not validation:
+            raise Exception("Invalid URL")
+        
+        if is_youtube_url(url):
+            loader = YoutubeLoader.from_youtube_url(url.strip())
         else:
-            loader = UnstructuredLoader(web_url=url)
+            loader = WebBaseLoader(url.strip())
 
         docs = loader.load()
 
@@ -30,5 +33,5 @@ def summarize(url: str) -> str:
         raise Exception(f"{str(e)}")
 
 if __name__ == "__main__":    
-    web_url="https://youtu.be/Pmd6knanPKw?si=sfLUl3iyq-96fyLd"
+    web_url="https://www.geeksforgeeks.org/dsa/binary-tree-data-structure/"
     print(summarize(web_url))

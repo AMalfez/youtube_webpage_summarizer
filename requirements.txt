@@ -2,9 +2,7 @@ langchain
 validators
 python-dotenv
 langchain-groq
-langchain-unstructured 
-unstructured-client 
-unstructured 
+beautifulsoup4
 python-magic
 youtube-transcript-api
 pytube
