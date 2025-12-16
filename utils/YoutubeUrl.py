@@ -1,5 +1,8 @@
+import os
 from urllib.parse import urlparse
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
+import os
 
 def is_youtube_url(url: str) -> bool:
     try:
@@ -39,7 +42,12 @@ def extract_video_id(url: str) -> str:
 
 def load_transcript(video_id: str):
     try:
-        ytt_api = YouTubeTranscriptApi()
+        ytt_api = YouTubeTranscriptApi(
+            proxy_config=WebshareProxyConfig(
+                proxy_username=os.getenv("PROXY_USERNAME"),
+                proxy_password=os.getenv("PROXY_PASSWORD"),
+            )
+        )
         transcript_list = ytt_api.list(video_id)
         transcript = transcript_list.find_transcript(['en'])
         ans = ""
