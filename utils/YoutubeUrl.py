@@ -42,12 +42,7 @@ def extract_video_id(url: str) -> str:
 
 def load_transcript(video_id: str):
     try:
-        ytt_api = YouTubeTranscriptApi(
-            proxy_config=WebshareProxyConfig(
-                proxy_username=os.getenv("PROXY_USERNAME"),
-                proxy_password=os.getenv("PROXY_PASSWORD"),
-            )
-        )
+        ytt_api = YouTubeTranscriptApi()
         transcript_list = ytt_api.list(video_id)
         transcript = transcript_list.find_transcript(['en'])
         ans = ""
