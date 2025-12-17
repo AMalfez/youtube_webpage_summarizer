@@ -2,7 +2,8 @@ import os
 from urllib.parse import urlparse
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.proxies import WebshareProxyConfig
-import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def is_youtube_url(url: str) -> bool:
     try:
@@ -42,7 +43,12 @@ def extract_video_id(url: str) -> str:
 
 def load_transcript(video_id: str):
     try:
-        ytt_api = YouTubeTranscriptApi()
+        ytt_api = YouTubeTranscriptApi(
+            proxy_config=WebshareProxyConfig(
+                proxy_username=os.getenv("PROXY_USERNAME"),
+                proxy_password=os.getenv("PROXY_PASSWORD"),
+            )
+        )
         transcript_list = ytt_api.list(video_id)
         transcript = transcript_list.find_transcript(['en'])
         ans = ""
@@ -55,23 +61,23 @@ def load_transcript(video_id: str):
         raise Exception(f"Could not retrieve transcript: {str(e)}")
     
 if __name__ == "__main__":
-    test_urls = [
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "https://youtu.be/dQw4w9WgXcQ",
-        "https://m.youtube.com/watch?v=dQw4w9WgXcQ",
-        "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "https://www.youtube.com/v/dQw4w9WgXcQ",
-        "https://www.example.com/watch?v=dQw4w9WgXcQ",
-        "https://www.youtube.com/watch?v=Op4EMZXWjyE&list=RDvB0V3iCSzQw&index=25"
-    ]
+    # test_urls = [
+    #     "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    #     "https://youtu.be/dQw4w9WgXcQ",
+    #     "https://m.youtube.com/watch?v=dQw4w9WgXcQ",
+    #     "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    #     "https://www.youtube.com/v/dQw4w9WgXcQ",
+    #     "https://www.example.com/watch?v=dQw4w9WgXcQ",
+    #     "https://www.youtube.com/watch?v=Op4EMZXWjyE&list=RDvB0V3iCSzQw&index=25"
+    # ]
 
     transcript_url = "https://www.youtube.com/watch?v=nMkQUlBtFlk"
     
-    for url in test_urls:
-        print(f"URL: {url}")
-        print(f"Is YouTube URL: {is_youtube_url(url)}")
-        print(f"Video ID: {extract_video_id(url)}")
-        print("-" * 40)
+    # for url in test_urls:
+    #     print(f"URL: {url}")
+    #     print(f"Is YouTube URL: {is_youtube_url(url)}")
+    #     print(f"Video ID: {extract_video_id(url)}")
+    #     print("-" * 40)
 
     if is_youtube_url(transcript_url):
         video_id = extract_video_id(transcript_url)
