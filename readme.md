@@ -1,6 +1,8 @@
 # AI Summarizer
 
 An intelligent content summarization tool that automatically generates concise summaries of YouTube videos and web pages using AI. Built with LangChain, FastAPI, and React.
+<img width="1920" height="886" alt="image" src="https://github.com/user-attachments/assets/576ff003-a693-4920-83bd-cee6d4141359" />
+
 
 ## 🌟 Features
 
@@ -68,15 +70,6 @@ PROXY_USERNAME="your-proxy-username"
 PROXY_PASSWORD="your-proxy-password"
 ```
 
-### 3. Frontend Setup
-
-*(Note: Frontend setup instructions should be added based on your React application structure)*
-
-```bash
-cd frontend
-npm install
-```
-
 ## 🎯 Usage
 
 ### Starting the Backend Server
@@ -84,19 +77,11 @@ npm install
 Run the FastAPI server:
 
 ```bash
-uvicorn app:app --reload
+fastapi run app.py
 ```
 
 The API will be available at `http://localhost:8000`
 
-### Starting the Frontend
-
-```bash
-cd frontend
-npm run dev
-```
-
-The interface will be available at `http://localhost:5173`
 
 ### API Endpoints
 
